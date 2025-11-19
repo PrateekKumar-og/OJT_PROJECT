@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="ojt.css">
+    
+</head>
+<body>
+    
+
+<div class="header">
+  <h1>My Audio Player</h1>
+</div>
+
+<div class="player-box">
+
+  <div class="controls">
+    <button id="prev">⏮️</button>
+    <button id="play">▶️</button>
+    <button id="next">⏭️</button>
+  </div>
+
+  <input type="range" id="seek" class="seek-bar">
+
+  <div class="volume">
+    <label>🔊</label>
+    <input type="range" id="volume" min="0" max="1" step="0.1">
+  </div>
+
+</div>
+
+<div class="playlist">
+  <h2>Playlist</h2>
+  <ul id="playlist-list">
+    <li>Song 1</li>
+    <li>Song 2</li>
+    <li>Song 3</li>
+  </ul>
+</div>
+</body>
+</html>
