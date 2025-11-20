@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="ojt.css">
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>RhythmFlow</title>
+
 </head>
 <body>
-    
 
-<div class="header">
-  <h1>My Audio Player</h1>
-</div>
-
-<div class="player-box">
-
-  <div class="controls">
-    <button id="prev">⏮️</button>
-    <button id="play">▶️</button>
-    <button id="next">⏭️</button>
+  <div class="navbar">
+    <div class="logo">MyMusic</div>
+    <div class="links">
+      <input id="search-input" type="text" placeholder="Search songs...">
+      <button onclick="toggleSearch()">Search</button>
+      <button onclick="showAllSongs()">Home</button>
+      <button>Library</button>
+    </div>
   </div>
 
-  <input type="range" id="seek" class="seek-bar">
-
-  <div class="volume">
-    <label>🔊</label>
-    <input type="range" id="volume" min="0" max="1" step="0.1">
+  
+  <div class="content">
+    <h2>Recommended</h2>
+    <div class="grid" id="song-grid"></div>
   </div>
-
-</div>
-
-<div class="playlist">
-  <h2>Playlist</h2>
-  <ul id="playlist-list">
-    <li>Song 1</li>
-    <li>Song 2</li>
-    <li>Song 3</li>
-  </ul>
-</div>
 </body>
+
+
+
+<footer><div class="player">
+    <div class="song-info">
+      <div id="song-thumb" class="song-thumb"></div>
+      <div>
+        <p id="song-name">No song playing</p>
+        <small>Artist Unknown</small>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="alert('Previous')">⏮</button>
+      <button onclick="togglePlay()">⏯</button>
+      <button onclick="alert('Next')">⏭</button>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </html>
