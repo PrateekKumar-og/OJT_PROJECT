@@ -58,3 +58,8 @@ function playSong(song) {
 function togglePlay() {
   alert("Play/Pause clicked");
 }
+
+document.getElementById("shuffle-btn").addEventListener("click", () => {
+  const randomIndex = Math.floor(Math.random() * songs.length);
+  playSong(songs[randomIndex]);
+});
