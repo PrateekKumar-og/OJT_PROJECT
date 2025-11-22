@@ -63,3 +63,25 @@ document.getElementById("shuffle-btn").addEventListener("click", () => {
   const randomIndex = Math.floor(Math.random() * songs.length);
   playSong(songs[randomIndex]);
 });
+
+const toggle = document.getElementById('themeToggle')
+toggle.addEventListener("click", () => {
+
+    // blur animation
+    document.body.classList.add("theme-blur");
+
+    setTimeout(() => {
+
+        // toggle theme class
+        const nowDark = !document.body.classList.contains("light");
+        document.body.classList.toggle("light", nowDark);
+
+        // update icon + save preference
+        toggle.textContent = nowDark ? "🌙":"☀️";
+        localStorage.setItem("theme", nowDark ? "light" : "dark");
+
+        // remove blur
+        setTimeout(() => document.body.classList.remove("theme-blur"), 250);
+
+    }, 120);
+});
