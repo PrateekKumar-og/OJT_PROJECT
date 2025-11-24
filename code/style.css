@@ -80,6 +80,7 @@ body {
 }
 
 .card:hover {
+  transform: translateY(-4px);
   background: var(--bg-color);
 }
 
