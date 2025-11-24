@@ -27,7 +27,7 @@ body {
   top: 0;
   left: 0;
   z-index: 10;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 10px rgba(0,0,0,0);
 
 }
 
