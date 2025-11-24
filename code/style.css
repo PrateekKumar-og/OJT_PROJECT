@@ -81,7 +81,7 @@ body {
 
 .card:hover {
   transform: translateY(-4px);
-  background: var(--bg-color);
+  box-shadow: 0 0 18px rgba(255,255,255,0.75);
 }
 
 .thumbnail {
