@@ -8,8 +8,7 @@ const songs = [
   { name: "Believer", artist: "Imagine Dragons", image: "https://i1.sndcdn.com/artworks-s3zOCWcV8XQVtQcv-0emq8A-t500x500.jpg"},
   { name: "Bad Guy", artist: "Billie Eilish", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR-8GazGx2-mzDLlbvX9JeKUm5147aBgBd7w&s"},
   { name: "Senorita", artist: "Shawn Mendes", image: "https://i.scdn.co/image/ab67616d0000b273bbda2325afa7cfda80ccd856"},
-];
-
+]
 
 const grid = document.getElementById("song-grid");
 const searchInput = document.getElementById("search-input");
@@ -91,4 +90,3 @@ document.getElementById("shuffle-btn").addEventListener("click", () => {
   const randomIndex = Math.floor(Math.random() * songs.length);
   playSong(songs[randomIndex]);
 });
-
