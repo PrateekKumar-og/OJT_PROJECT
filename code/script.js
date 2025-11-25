@@ -9,11 +9,15 @@ const songs = [
   { name: "Bad Guy", artist: "Billie Eilish", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR-8GazGx2-mzDLlbvX9JeKUm5147aBgBd7w&s"},
   { name: "Senorita", artist: "Shawn Mendes", image: "https://i.scdn.co/image/ab67616d0000b273bbda2325afa7cfda80ccd856"},
 <<<<<<< HEAD
+<<<<<<< HEAD
 ]
 
 =======
+=======
+>>>>>>> 4204f5295378ba104b26e776d8a0d8e62ab4cae4
 ];
 >>>>>>> 0afe882 (updated css)
+
 
 
 const grid = document.getElementById("song-grid");
