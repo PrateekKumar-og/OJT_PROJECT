@@ -49,6 +49,7 @@ searchInput.addEventListener("input", () => {
   renderSongs(filtered);
 });
 
+
 function showAllSongs() {
   searchInput.value = "";
   renderSongs(songs);
@@ -76,7 +77,7 @@ toggle.addEventListener("click", () => {
         const nowDark = !document.body.classList.contains("light");
         document.body.classList.toggle("light", nowDark);
 
-        // update icon + save preference
+        // update icon 
         toggle.textContent = nowDark ? "🌙":"☀️";
         localStorage.setItem("theme", nowDark ? "light" : "dark");
 
