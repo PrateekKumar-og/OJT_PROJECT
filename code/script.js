@@ -15,7 +15,7 @@ const songs = [
 
 function renderSongs(songList) {
   grid.innerHTML = "";
-  list.forEach(song => {
+  songList.forEach(song => {
     const card = document.createElement("div");
     card.className = "card";
     card.onclick = () => playSong(song);
