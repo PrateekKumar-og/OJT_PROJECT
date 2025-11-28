@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +8,7 @@
   <title>RhythmFlow</title>
 
 </head>
+
 <body>
 
   <div class="navbar">
@@ -16,7 +18,7 @@
       <button onclick="toggleSearch()">Search</button>
       <button onclick="showAllSongs()">Home</button>
       <button>Library</button>
-      <button id="themetoggle">🌙</button>
+      <button id="themeToggle">🌙</button>
       <button id="premium">premium</button>
 
     </div>
@@ -38,13 +40,43 @@
   
   <div class="content">
     <h2>Recommended</h2>
-    <div class="grid" id="song-grid"></div>
-  </div>
+    <div class="grid" id="song-grid">
+      <!-- TEST CARD -->
+      <div class="testcard">
+        <div class="thumbnail"
+          style="background-image: url('https://f4.bcbits.com/img/a1078439292_10.jpg'); height: 140px; background-size: cover; background-position: center;">
+        </div>
+        <p>Heat Waves - Glass Animals</p>
+        <audio controls>
+          <source src="./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3" type="audio/mpeg">
+          song play
+        </audio>
+      </div>
+
+      <!-- Song Card 1 -->
+      <div class="card">
+        <div class="thumbnail"
+          style="background-image: url('https://f4.bcbits.com/img/a1078439292_10.jpg'); height: 140px; background-size: cover; background-position: center;">
+        </div>
+        <p>Heat Waves - Glass Animals</p>
+        <audio controls>
+          <source src="./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3" type="audio/mpeg">
+          song play
+        </audio>
+      </div>
+
+
+      <div class="content">
+        <h2>Recommended</h2>
+        <div class="grid" id="song-grid"></div>
+      </div>
+    </div>
 </body>
 
 
 
-<footer><div class="player">
+<footer>
+  <div class="player">
     <div class="song-info">
       <div id="song-thumb" class="song-thumb"></div>
       <div>
@@ -52,6 +84,11 @@
         <small>Artist Unknown</small>
       </div>
     </div>
+
+    <audio controls id="audioEle" style="width: 0; height: 0;">
+      <source src="" type="audio/mpeg">
+      song play
+    </audio>
 
     <div class="controls">
 
@@ -63,5 +100,7 @@
   </div>
 </footer>
 
-<script src="script.js"></script>
+<script defer src="script.js"></script>
+<script defer src="./audioHandeling.js"></script>
+
 </html>
