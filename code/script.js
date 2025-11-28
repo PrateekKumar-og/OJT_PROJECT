@@ -80,7 +80,7 @@ toggle.addEventListener("click", () => {
     document.body.classList.toggle("light", nowDark);
 
     // update icon 
-    toggle.textContent = nowDark ? "🌙" : "☀️";
+       toggle.textContent = nowDark ? "🌙" : "☀️";
     localStorage.setItem("theme", nowDark ? "light" : "dark");
 
     // remove blur
