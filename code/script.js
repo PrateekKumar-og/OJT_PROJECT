@@ -8,6 +8,8 @@ const songs = [
   { name: "Believer", artist: "Imagine Dragons", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://i1.sndcdn.com/artworks-s3zOCWcV8XQVtQcv-0emq8A-t500x500.jpg" },
   { name: "Bad Guy", artist: "Billie Eilish", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR-8GazGx2-mzDLlbvX9JeKUm5147aBgBd7w&s" },
   { name: "Senorita", artist: "Shawn Mendes", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://i.scdn.co/image/ab67616d0000b273bbda2325afa7cfda80ccd856" },
+  { name: "saiyaara", artist: "sankalp Sadanah", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRefVwqymgmk6TwAKxiYmP5yYXFVy5iZZbK9Q&s" },
+  { name: "Ik vaari aa", artist: "Amitabh Bhattacharya", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://a10.gaanacdn.com/gn_img/song/ZaP37OR3Dy/P37zwEq1KD/size_m_1516001169.jpg" }
 ]
 
  const grid = document.getElementById("song-grid");
