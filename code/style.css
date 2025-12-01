@@ -172,9 +172,10 @@ body {
   transition: 0.3s;
   font-size: 14px;
 }
+#waveform{
+  height: 100%;
+}
 
 .theme-toggle:hover {
   opacity: 0.8;
-} */
-
-/* upto date(23/11/2025) */
+}

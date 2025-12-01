@@ -1,36 +1,47 @@
-const songs = [
-  { name: "Heat Waves", artist: "Glass Animals", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://f4.bcbits.com/img/a1078439292_10.jpg" },
-  { name: "Lovely", artist: "Billie Eilish", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://f4.bcbits.com/img/a0241959966_10.jpg" },
-  { name: "Starboy", artist: "The Weeknd", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://imgs.search.brave.com/yVjzNNjJ6Dekvi8phKwFDkUREDGMjofSIoLK6hFp4nE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzFlLzk2/LzZmLzFlOTY2ZjU5/ZDk0ZmU3ODg5M2Iy/ZTk0MTJhYjcxZWNk/LmpwZw" },
-  { name: "Shape of You", artist: "Ed Sheeran", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://imgs.search.brave.com/kB77pzqdcR-IOOCKVCyz2JYPSH_6ZWD_2DKqekCI-_k/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMS5z/bmRjZG4uY29tL2Fy/dHdvcmtzLTE3RGlK/ZDhyMEo0ZC0wLXQx/MDgweDEwODAuanBn" },
-  { name: "Blinding Lights", artist: "The Weeknd", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://mir-s3-cdn-cf.behance.net/project_modules/fs/6e774a96396119.5eae9e4c542ce.jpg" },
-  { name: "Happier", artist: "Marshmello", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://i1.sndcdn.com/artworks-000390226092-1vzsos-t1080x1080.jpg" },
-  { name: "Believer", artist: "Imagine Dragons", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://i1.sndcdn.com/artworks-s3zOCWcV8XQVtQcv-0emq8A-t500x500.jpg" },
-  { name: "Bad Guy", artist: "Billie Eilish", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR-8GazGx2-mzDLlbvX9JeKUm5147aBgBd7w&s" },
-  { name: "Senorita", artist: "Shawn Mendes", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://i.scdn.co/image/ab67616d0000b273bbda2325afa7cfda80ccd856" },
-  { name: "saiyaara", artist: "sankalp Sadanah", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRefVwqymgmk6TwAKxiYmP5yYXFVy5iZZbK9Q&s" },
-  { name: "Ik vaari aa", artist: "Amitabh Bhattacharya", audio: "./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3", image: "https://a10.gaanacdn.com/gn_img/song/ZaP37OR3Dy/P37zwEq1KD/size_m_1516001169.jpg" }
-]
 
- const grid = document.getElementById("song-grid");
- const searchInput = document.getElementById("search-input");
+// SONG DATA & STATE
+let songs = []; // Will be populated from API
+let currentSongIndex = -1; // Track current song
 
+const grid = document.getElementById("song-grid");
+const searchInput = document.getElementById("search-input");
+
+
+// RENDER SONGS
 function renderSongs(songList) {
   grid.innerHTML = "";
-  songList.forEach(song => {
+
+  if (songList.length === 0) {
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">No songs found. Try a different search!</p>';
+    return;
+  }
+
+  songList.forEach((song, index) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.onclick = () => playSong(song);
+    card.onclick = () => {
+      currentSongIndex = songs.indexOf(song);
+      playSong(song);
+    };
     card.innerHTML = `
       <div class="thumbnail" style="background-image: url('${song.image}')"></div>
       <p>${song.name}</p>
       <small style="opacity:0.6">${song.artist}</small>
     `;
-   grid.appendChild(card);
+    grid.appendChild(card);
   });
- }
+}
 
- renderSongs(songs);
+
+// INITIALIZE APP
+async function initializeApp() {
+  grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Loading recommended tracks...</p>';
+  songs = await MusicAPI.getRecommendedTracks();
+  renderSongs(songs);
+}
+
+// Load recommended tracks on page load
+initializeApp();
 
 function toggleSearch() {
   if (searchInput.style.display === "none") {
@@ -42,31 +53,33 @@ function toggleSearch() {
   searchInput.focus();
 }
 
-searchInput.addEventListener("input", () => {
-  const query = searchInput.value.toLowerCase();
-  const filtered = songs.filter(song =>
-    song.name.toLowerCase().includes(query) ||
-    song.artist.toLowerCase().includes(query)
-  );
-  renderSongs(filtered);
-});
+// SEARCH FUNCTIONALITY
+searchInput.addEventListener("keydown", async (e) => {
+  if (e.key=='Enter'){
+    const query = searchInput.value.trim();
+    if (query === '') {
+      // Show recommended tracks when search is empty
+      songs = await MusicAPI.getRecommendedTracks();
+      renderSongs(songs);
+    } else {
+      // Search API for tracks
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">Searching...</p>';
+      const results = await MusicAPI.searchTracks(query);
+      songs = results;
+      renderSongs(results);
+    }
+  }
+})
 
 
-function showAllSongs() {
+async function showAllSongs() {
   searchInput.value = "";
+  grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Loading recommended tracks...</p>';
+  songs = await MusicAPI.getRecommendedTracks();
   renderSongs(songs);
 }
 
-function playSong(song) {
-  document.getElementById("song-name").innerHTML = song.name;
-  document.getElementById("song-thumb").style.backgroundImage =
-    `url('${song.image}')`;
-  document.getElementById('audioEle').src = song.audio;
-}
 
-function togglePlay() {
-  alert("Play/Pause clicked");
-}
 
 const toggle = document.getElementById('themeToggle')
 
@@ -82,7 +95,7 @@ toggle.addEventListener("click", () => {
     document.body.classList.toggle("light", nowDark);
 
     // update icon 
-       toggle.textContent = nowDark ? "🌙" : "☀️";
+    toggle.textContent = nowDark ? "🌙" : "☀️";
     localStorage.setItem("theme", nowDark ? "light" : "dark");
 
     // remove blur
@@ -91,7 +104,91 @@ toggle.addEventListener("click", () => {
   }, 120);
 });
 
-// document.getElementById("shuffle-btn").addEventListener("click", () => {
-//   const randomIndex = Math.floor(Math.random() * songs.length);
-//   playSong(songs[randomIndex]);
-// });
+
+
+
+// WAVESURFER SETUP
+
+let wavesurfer = WaveSurfer.create({
+  container: '#waveform',
+  waveColor: '#999',
+  progressColor: '#fff',
+  height: 50,
+  responsive: true
+});
+
+const playBtn = document.querySelector('.controls button[onclick="togglePlay()"]');
+
+wavesurfer.on('play', () => {
+  playBtn.textContent = "⏸";
+});
+
+wavesurfer.on('pause', () => {
+  playBtn.textContent = "⏯";
+});
+
+
+// Load song when clicked
+function playSong(song) {
+  document.getElementById("song-name").innerHTML = song.name;
+  document.getElementById("song-thumb").style.backgroundImage = `url('${song.image}')`;
+
+  // Load into WaveSurfer
+  wavesurfer.load(song.audio);
+
+  // Play automatically
+  wavesurfer.on('ready', () => {
+    wavesurfer.play();
+  });
+}
+
+// Play / Pause button
+function togglePlay() {
+  wavesurfer.playPause();
+}
+
+
+// currentSongIndex is now declared at the top of the file
+
+
+// NEXT SONG
+function playNext() {
+  if (currentSongIndex === -1 || currentSongIndex >= songs.length - 1) {
+    currentSongIndex = 0; // wrap to first song
+  } else {
+    currentSongIndex++;
+  }
+  const nextSong = songs[currentSongIndex];
+
+  // Update footer info
+  document.getElementById("song-name").textContent = nextSong.name;
+  document.getElementById("song-thumb").style.backgroundImage = `url('${nextSong.image}')`;
+
+  // Load and play in WaveSurfer
+  wavesurfer.load(nextSong.audio);
+  wavesurfer.once('ready', () => wavesurfer.play());
+}
+
+// PREVIOUS SONG
+function playPrev() {
+  if (currentSongIndex <= 0) {
+    currentSongIndex = songs.length - 1; // wrap to last song
+  } else {
+    currentSongIndex--;
+  }
+  const prevSong = songs[currentSongIndex];
+
+  document.getElementById("song-name").textContent = prevSong.name;
+  document.getElementById("song-thumb").style.backgroundImage = `url('${prevSong.image}')`;
+
+  wavesurfer.load(prevSong.audio);
+  wavesurfer.once('ready', () => wavesurfer.play());
+
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === "ArrowRight") {
+    playNext()
+  } else if (e.key === "ArrowLeft") {
+    playPrev()
+  }
+})

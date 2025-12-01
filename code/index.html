@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css">
   <title>RhythmFlow</title>
+  <!-- Load WaveSurfer -->
+  <script src="https://unpkg.com/wavesurfer.js"></script>
+
+
 
 </head>
 
@@ -27,57 +31,12 @@
   <div class="content">
     <h2>Recommended</h2>
     <div class="grid" id="song-grid">
-      <!-- Song Card 1 -->
-      <div class="card">
-        <div class="thumbnail"
-          style="background-image: url('https://f4.bcbits.com/img/a1078439292_10.jpg'); height: 140px; background-size: cover; background-position: center;">
-        </div>
-        <p>Heat Waves - Glass Animals</p>
-        <audio controls>
-          <source src="code/audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
-      </div>
-
-
-      <div class="content">
-        <h2>Recommended</h2>
-        <div class="grid" id="song-grid">
-          <!-- TEST CARD -->
-          <div class="testcard">
-            <div class="thumbnail"
-              style="background-image: url('https://f4.bcbits.com/img/a1078439292_10.jpg'); height: 140px; background-size: cover; background-position: center;">
-            </div>
-            <p>Heat Waves - Glass Animals</p>
-            <audio controls>
-              <source src="./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3" type="audio/mpeg">
-              song play
-            </audio>
-          </div>
-
-          <!-- Song Card 1 -->
-          <div class="card">
-            <div class="thumbnail"
-              style="background-image: url('https://f4.bcbits.com/img/a1078439292_10.jpg'); height: 140px; background-size: cover; background-position: center;">
-            </div>
-            <p>Heat Waves - Glass Animals</p>
-            <audio controls>
-              <source src="./audio/Glass_animal_-_Heat_Waves_(mp3.pm).mp3" type="audio/mpeg">
-              song play
-            </audio>
-          </div>
-
-
-          <div class="content">
-            <h2>Recommended</h2>
-            <div class="grid" id="song-grid"></div>
-          </div>
-        </div>
-      </div>
+      <!-- Songs will be dynamically loaded from API -->
     </div>
   </div>
   <footer>
     <div class="player">
+
       <div class="song-info">
         <div id="song-thumb" class="song-thumb"></div>
         <div>
@@ -86,22 +45,20 @@
         </div>
       </div>
 
-      <audio controls id="audioEle" style="width: 0; height: 0;">
-        <source src="" type="audio/mpeg">
-        song play
-      </audio>
-
       <div class="controls">
 
-        <button onclick="alert('Previous')">⏮</button>
+        <button onclick="playPrev()">⏮</button>
         <button onclick="togglePlay()">⏯</button>
-        <button onclick="alert('Next')">⏭</button>
+        <button onclick="playNext()">⏭</button>
         <button id="repeat-btn">∞</button>
+
       </div>
+
+      <div id="waveform" style="width: 50%; height: 80px;"></div>
     </div>
   </footer>
+  <script defer src="api.js"></script>
   <script defer src="script.js"></script>
-  <script defer src="./audioHandeling.js"></script>
 </body>
 
 </html>
