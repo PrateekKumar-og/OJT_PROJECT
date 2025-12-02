@@ -183,3 +183,9 @@ body {
 .theme-toggle:hover {
   opacity: 0.8;
 }
+
+footer{
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
