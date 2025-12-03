@@ -1,11 +1,8 @@
-
 // ITUNES API SERVICE
-
 const MusicAPI = {
     /**
-     * Search for tracks by query (song name or artist)
-     * @param {string} query - Search term
-     * @returns {Promise<Array>} Array of song objects
+     * @param {string} query 
+     * @returns {Promise<Array>} 
      */
     async searchTracks(query) {
         if (!query || query.trim() === '') {
@@ -31,17 +28,15 @@ const MusicAPI = {
     },
 
     /**
-     * Get recommended/popular tracks for home page
-     * Uses a mix of popular artists to simulate recommendations
-     * @returns {Promise<Array>} Array of song objects
+     * @returns {Promise<Array>} 
      */
     async getRecommendedTracks() {
         try {
-            // Search for popular tracks from various popular artists
+
             const popularSearches = ['billie eilish', 'the weeknd', 'taylor swift', 'ed sheeran', 'ariana grande'];
             const randomSearch = popularSearches[Math.floor(Math.random() * popularSearches.length)];
 
-            const url = `https://itunes.apple.com/search?term=${encodeURIComponent(randomSearch)}&media=music&entity=song&limit=6`;
+            const url = `https://itunes.apple.com/search?term=${encodeURIComponent(randomSearch)}&media=music&entity=song&limit=`;
 
             const response = await fetch(url);
             const data = await response.json();
@@ -58,9 +53,8 @@ const MusicAPI = {
     },
 
     /**
-     * Transform iTunes API response to match existing song object structure
-     * @param {Array} tracks - Raw tracks from iTunes API
-     * @returns {Array} Transformed song objects
+     * @param {Array} tracks 
+     * @returns {Array} 
      */
     transformTracks(tracks) {
         return tracks.map(track => ({

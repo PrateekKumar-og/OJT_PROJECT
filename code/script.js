@@ -1,13 +1,10 @@
-
-// SONG DATA & STATE
-let songs = []; // Will be populated from API
-let currentSongIndex = -1; // Track current song
+let songs = []; 
+let currentSongIndex = -1; 
 
 const grid = document.getElementById("song-grid");
 const searchInput = document.getElementById("search-input");
 
 
-// RENDER SONGS
 function renderSongs(songList) {
   grid.innerHTML = "";
 
@@ -33,14 +30,12 @@ function renderSongs(songList) {
 }
 
 
-// INITIALIZE APP
 async function initializeApp() {
   grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Loading recommended tracks...</p>';
   songs = await MusicAPI.getRecommendedTracks();
   renderSongs(songs);
 }
 
-// Load recommended tracks on page load
 initializeApp();
 
 function toggleSearch() {
@@ -53,16 +48,14 @@ function toggleSearch() {
   searchInput.focus();
 }
 
-// SEARCH FUNCTIONALITY
+
 searchInput.addEventListener("keydown", async (e) => {
   if (e.key=='Enter'){
     const query = searchInput.value.trim();
     if (query === '') {
-      // Show recommended tracks when search is empty
       songs = await MusicAPI.getRecommendedTracks();
       renderSongs(songs);
     } else {
-      // Search API for tracks
       grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">Searching...</p>';
       const results = await MusicAPI.searchTracks(query);
       songs = results;
@@ -85,29 +78,25 @@ const toggle = document.getElementById('themeToggle')
 
 toggle.addEventListener("click", () => {
 
-  // blur animation
+  
   document.body.classList.add("theme-blur");
 
   setTimeout(() => {
 
-    // toggle theme class
+    
     const nowDark = !document.body.classList.contains("light");
     document.body.classList.toggle("light", nowDark);
 
-    // update icon 
+    
     toggle.textContent = nowDark ? "🌙" : "☀️";
     localStorage.setItem("theme", nowDark ? "light" : "dark");
 
-    // remove blur
+    
     setTimeout(() => document.body.classList.remove("theme-blur"), 250);
 
   }, 120);
 });
 
-
-
-
-// WAVESURFER SETUP
 
 let wavesurfer = WaveSurfer.create({
   container: '#waveform',
@@ -128,7 +117,7 @@ wavesurfer.on('pause', () => {
 });
 
 const footer = document.querySelector('footer')
-// Load song when clicked
+
 function playSong(song) {
   document.getElementById("song-name").innerHTML = song.name;
   document.getElementById("song-thumb").style.backgroundImage = `url('${song.image}')`;
@@ -138,46 +127,43 @@ requestAnimationFrame(() => {
   footer.style.transform = "translateY(0)";
 });
 
-  // Load into WaveSurfer
+
   wavesurfer.load(song.audio);
 
-  // Play automatically
+
   wavesurfer.on('ready', () => {
     wavesurfer.play();
   });
 }
 
-// Play / Pause button
+
 function togglePlay() {
   wavesurfer.playPause();
 }
 
 
-// currentSongIndex is now declared at the top of the file
 
-
-// NEXT SONG
 function playNext() {
   if (currentSongIndex === -1 || currentSongIndex >= songs.length - 1) {
-    currentSongIndex = 0; // wrap to first song
+    currentSongIndex = 0; 
   } else {
     currentSongIndex++;
   }
   const nextSong = songs[currentSongIndex];
 
-  // Update footer info
+
   document.getElementById("song-name").textContent = nextSong.name;
   document.getElementById("song-thumb").style.backgroundImage = `url('${nextSong.image}')`;
 
-  // Load and play in WaveSurfer
+
   wavesurfer.load(nextSong.audio);
   wavesurfer.once('ready', () => wavesurfer.play());
 }
 
-// PREVIOUS SONG
+
 function playPrev() {
   if (currentSongIndex <= 0) {
-    currentSongIndex = songs.length - 1; // wrap to last song
+    currentSongIndex = songs.length - 1;
   } else {
     currentSongIndex--;
   }
