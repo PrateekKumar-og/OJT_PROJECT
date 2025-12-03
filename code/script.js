@@ -127,11 +127,16 @@ wavesurfer.on('pause', () => {
   playBtn.textContent = "⏯";
 });
 
-
+const footer = document.querySelector('footer')
 // Load song when clicked
 function playSong(song) {
   document.getElementById("song-name").innerHTML = song.name;
   document.getElementById("song-thumb").style.backgroundImage = `url('${song.image}')`;
+  footer.style.display = "block";
+requestAnimationFrame(() => {
+  footer.style.opacity = "1";
+  footer.style.transform = "translateY(0)";
+});
 
   // Load into WaveSurfer
   wavesurfer.load(song.audio);

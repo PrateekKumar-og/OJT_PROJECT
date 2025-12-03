@@ -41,7 +41,7 @@ const MusicAPI = {
             const popularSearches = ['billie eilish', 'the weeknd', 'taylor swift', 'ed sheeran', 'ariana grande'];
             const randomSearch = popularSearches[Math.floor(Math.random() * popularSearches.length)];
 
-            const url = `https://itunes.apple.com/search?term=${encodeURIComponent(randomSearch)}&media=music&entity=song&limit=30`;
+            const url = `https://itunes.apple.com/search?term=${encodeURIComponent(randomSearch)}&media=music&entity=song&limit=6`;
 
             const response = await fetch(url);
             const data = await response.json();
