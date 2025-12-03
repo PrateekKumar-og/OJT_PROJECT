@@ -189,3 +189,42 @@ footer{
   transform: translateY(40px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
+
+/* following code is for pagination */
+.headCon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.pagination {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: var(--btnBackground);
+  color: var(--btnTextColor);
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  padding: 0.1rem;
+}
+
+
+.pagination button:hover {
+  transform: translateY(-2px);
+  background: var(--btnBackground);
+}
+
+.activeBtn{
+  background: var(--activeBtnBackground) !important;
+  color: var(--activeBtnTextColor) !important;
+  font-weight: 700;
+  border: 2px solid var(--activeBtnTextColor) !important;
+}

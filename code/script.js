@@ -64,7 +64,7 @@ searchInput.addEventListener("keydown", async (e) => {
   }
 })
 
-
+//shows thee recommeded songs if the search is reset or empty
 async function showAllSongs() {
   searchInput.value = "";
   grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Loading recommended tracks...</p>';
