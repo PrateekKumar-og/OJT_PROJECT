@@ -17,22 +17,22 @@
       <input id="search-input" type="text" placeholder="Search songs...">
       <button onclick="toggleSearch()">Search</button>
       <button onclick="showAllSongs()">Home</button>
-      <button>Library</button>
+      <button onclick="showFavorites()">Favorites</button>
       <button id="themeToggle">🌙</button>
-      <button id="premium">premium</button>
 
     </div>
   </div>
 
   <div class="content">
     <div class="headCon">
-      <h2>Recommended</h2>
+      <h2 id="page-title">Recommended</h2>
       <div id="pagination" class="pagination"></div>
     </div>
     <div class="grid" id="song-grid">
 
     </div>
   </div>
+
   <footer>
     <div class="player">
 
@@ -49,7 +49,6 @@
         <button onclick="playPrev()">⏮</button>
         <button onclick="togglePlay()">⏯</button>
         <button onclick="playNext()">⏭</button>
-        <button id="repeat-btn">∞</button>
 
       </div>
 

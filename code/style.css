@@ -16,11 +16,12 @@
   --activeBtnTextColor: #357ABD;
 }
 
-body { 
+body {
   margin: 0;
   background: var(--bg-color);
   color: var(--text-color);
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 
@@ -38,7 +39,6 @@ body {
   z-index: 10;
   box-shadow: 0 2px 10px white;
   backdrop-filter: blur(8px);
-  
 }
 
 
@@ -46,7 +46,7 @@ body {
   background: none;
   border: none;
   color: var(--text-color);
-  margin:0 2rem;
+  margin: 0 2rem;
   cursor: pointer;
   font-size: 14px;
   opacity: 0.7;
@@ -67,10 +67,11 @@ body {
 }
 
 .content {
-  padding: 100px 20px 120px;
+  padding: 100px 20px 180px;
 }
 
 .grid {
+  width: 100vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
@@ -83,8 +84,8 @@ body {
   border-radius: 12px;
   cursor: pointer;
   transition: box-shadow 0.6s ease, transform 0.2s ease;
-  box-shadow: 0 0 0 rgba(255,255,255,0);
-  
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+
 }
 
 
@@ -104,6 +105,43 @@ body {
   margin-bottom: 10px;
 }
 
+.card {
+  position: relative;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.favorite-btn.active {
+  background: rgba(255, 0, 0, 0.8);
+}
+
+
+
+
+
+
 
 .player {
   width: 100%;
@@ -117,6 +155,7 @@ body {
   padding: 0 20px;
   border-top: 1px solid #333;
   justify-content: space-between;
+  z-index: 100;
 }
 
 .song-info {
@@ -144,22 +183,23 @@ body {
 
 
 #themeToggle {
-    font-size: 1.8rem;
-    cursor: pointer;
-    z-index: 999;
-    transition: 0.3s ease;
-    background-color: rgba(127, 86, 98, 0.35);
-    padding: 0.2rem 1rem;
-    border-radius: 10px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 999;
+  transition: 0.3s ease;
+  background-color: rgba(127, 86, 98, 0.35);
+  padding: 0.2rem 1rem;
+  border-radius: 10px;
+  margin-right: 3rem;
 }
 
 #themeToggle:hover {
-    background-color: rgba(244, 0, 69, 0.764);
+  background-color: rgba(244, 0, 69, 0.764);
 }
 
 body.theme-blur {
-    filter: blur(2px);
-    transition: filter 0.4s ease;
+  filter: blur(2px);
+  transition: filter 0.4s ease;
 }
 
 
@@ -180,7 +220,8 @@ body {
   transition: 0.3s;
   font-size: 14px;
 }
-#waveform{
+
+#waveform {
   height: 100%;
   width: 50%;
   scale: 0.91;
@@ -192,7 +233,9 @@ body {
   opacity: 0.8;
 }
 
-footer{
+footer {
+  position: relative;
+  z-index: 200;
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -230,9 +273,250 @@ footer{
   background: var(--btnBackground);
 }
 
-.activeBtn{
+.activeBtn {
   background: var(--activeBtnBackground) !important;
   color: var(--activeBtnTextColor) !important;
   font-weight: 700;
   border: 2px solid var(--activeBtnTextColor) !important;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Mobile Devices (< 768px) */
+@media screen and (max-width: 767px) {
+  .navbar {
+    height: auto;
+    min-height: 80px;
+    padding: 12px 15px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 20px;
+    margin-bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .links button {
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+    background: var(--btnBackground);
+    color: var(--btnTextColor);
+    flex-shrink: 0;
+  }
+
+  #themeToggle {
+    font-size: 1.5rem;
+    padding: 0.2rem 0.7rem;
+  }
+
+  #premium {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  #search-input {
+    width: 100%;
+    margin-top: 0;
+    font-size: 14px;
+    order: 10;
+  }
+
+  .content {
+    padding: 140px 15px 200px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .thumbnail {
+    height: 200px;
+  }
+
+  .favorite-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    top: 15px;
+    right: 15px;
+  }
+
+  .headCon {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .headCon h2 {
+    font-size: 20px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    width: 100vw;
+  }
+
+  .pagination button {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .player {
+    height: auto;
+    min-height: 100px;
+    flex-direction: column;
+    padding: 10px 15px;
+    gap: 10px;
+  }
+
+  .song-info {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .song-thumb {
+    width: 45px;
+    height: 45px;
+  }
+
+  .song-info p {
+    font-size: 14px;
+  }
+
+  .song-info small {
+    font-size: 12px;
+  }
+
+  .controls {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .controls button {
+    font-size: 20px;
+    margin: 0 8px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  #waveform {
+    width: 100%;
+    height: 60px;
+    margin-top: 10px;
+  }
+}
+
+/* Tablet Devices (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .navbar {
+    padding: 0 30px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .links button {
+    margin: 0 1rem;
+    font-size: 13px;
+  }
+
+  #search-input {
+    width: 200px;
+  }
+
+  .content {
+    padding: 100px 30px 120px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .thumbnail {
+    height: 160px;
+  }
+
+  .favorite-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 19px;
+  }
+
+  .player {
+    padding: 0 30px;
+  }
+
+  #waveform {
+    width: 45%;
+  }
+}
+
+/* Large Desktop (> 1440px) */
+@media screen and (min-width: 1441px) {
+  .content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 40px 120px;
+  }
+
+  .grid {
+    width: 95vw;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+  }
+
+  .navbar {
+    padding: 0 40px;
+  }
+}
+
+/* Touch-friendly improvements for all mobile devices */
+@media (hover: none) and (pointer: coarse) {
+
+  .links button,
+  .controls button,
+  .pagination button,
+  .favorite-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .card {
+    cursor: default;
+  }
+
+  .card:active {
+    transform: scale(0.98);
+  }
 }
