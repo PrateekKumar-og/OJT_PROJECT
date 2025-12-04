@@ -1,0 +1,2 @@
+<!-- Prateek Kumar -->
+ Today I wrapped up my HTML and CSS updates. It felt satisfying to finally see the layout come together the way I imagined. Fixing the structure and adjusting the styling taught me how even small improvements can make the whole interface look cleaner.

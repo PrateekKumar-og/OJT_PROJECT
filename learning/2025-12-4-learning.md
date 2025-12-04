@@ -1,0 +1,2 @@
+<!-- Prateek Kumar -->
+Smoother hover interactions make navigation feel more intuitive, and enhancements in sizing, typography, and responsiveness give the pagination a polished, app-like feel. These refinements elevate the interface and contribute to a more cohesive user experience.
