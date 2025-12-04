@@ -1,3 +1,8 @@
 <!-- PRATEEK KUMAR -->
-The waveform and footer now have a cleaner, more modern CSS design, giving your music player an app-like feel. The waveform now has smoother spacing, sharper peaks, and a balanced layout, making the audio section stand out. The footer now matches the UI with better alignment, typography, and styling. These updates make the interface more professional, responsive, and aesthetically cohesive, improving the user experience.             
-<!-- Samyak raj singh -->
+
+
+We worked together to fix several errors that appeared while fetching the API.
+After spending hours debugging, we finally managed to fetch and integrate it into our website.                                                         
+
+
+<!-- Samyak raj singh -->s

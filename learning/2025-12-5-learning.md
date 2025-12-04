@@ -1,2 +1,2 @@
 <!-- Prateek Kumar -->
- Today I wrapped up my HTML and CSS updates. It felt satisfying to finally see the layout come together the way I imagined. Fixing the structure and adjusting the styling taught me how even small improvements can make the whole interface look cleaner.
+Smoother hover interactions make navigation feel more intuitive, and enhancements in sizing, typography, and responsiveness give the pagination a polished, app-like feel. These refinements elevate the interface and contribute to a more cohesive user experience.
