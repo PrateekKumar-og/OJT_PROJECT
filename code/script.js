@@ -1,8 +1,42 @@
-let songs = []; 
-let currentSongIndex = -1; 
+let songs = [];
+let currentSongIndex = -1;
 
 let currentPage = 1;
-const songsPerPage = 6; 
+const songsPerPage = 8;
+
+let currentView = 'home'; // 'home' or 'favorites'
+
+// FAVORITES MANAGEMENT
+function getFavorites() {
+  try {
+    const favorites = localStorage.getItem('favorites');
+    return favorites ? JSON.parse(favorites) : [];
+  } catch (error) {
+    console.error('Error reading favorites:', error);
+    return [];
+  }
+}
+
+function addToFavorites(song) {
+  const favorites = getFavorites();
+  const exists = favorites.some(fav => fav.id === song.id);
+  if (!exists) {
+    favorites.push(song);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+}
+
+function removeFromFavorites(songId) {
+  let favorites = getFavorites();
+  favorites = favorites.filter(fav => fav.id !== songId);
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+function isFavorite(songId) {
+  const favorites = getFavorites();
+  return favorites.some(fav => fav.id === songId);
+}
+
 
 
 const grid = document.getElementById("song-grid");
@@ -24,19 +58,36 @@ function renderSongs(songList) {
   pageSongs.forEach((song, index) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.onclick = () => {
-      currentSongIndex = songs.indexOf(song);
-      playSong(song);
-    };
+
+    const isFav = isFavorite(song.id);
+    const heartIcon = isFav ? '❤️' : '🤍';
+
     card.innerHTML = `
       <div class="thumbnail" style="background-image: url('${song.image}')"></div>
+      <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${song.id}, '${song.name.replace(/'/g, "\\'")}', '${song.artist.replace(/'/g, "\\'")}', '${song.image}', '${song.audio}')">${heartIcon}</button>
       <p>${song.name}</p>
       <small style="opacity:0.6">${song.artist}</small>
     `;
+
+    card.onclick = () => {
+      currentSongIndex = songs.indexOf(song);
+      playSong(song);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === "ArrowRight") {
+          playNext()
+        } else if (e.key === "ArrowLeft") {
+          playPrev()
+        }else if (e.key === ' ') {
+          togglePlay()
+        }
+      })
+    };
+
     grid.appendChild(card);
   });
   renderPagination(songList.length);
 }
+
 
 function renderPagination(totalSongs) {
   const container = document.getElementById("pagination");
@@ -45,7 +96,7 @@ function renderPagination(totalSongs) {
   const totalPages = Math.ceil(totalSongs / songsPerPage);
   if (totalPages <= 1) return;
 
-  
+
   const prevBtn = document.createElement("button");
   prevBtn.textContent = "Prev";
   prevBtn.disabled = currentPage === 1;
@@ -55,7 +106,7 @@ function renderPagination(totalSongs) {
   };
   container.appendChild(prevBtn);
 
-  
+
   for (let i = 1; i <= totalPages; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
@@ -102,22 +153,51 @@ function toggleSearch() {
 }
 
 
+
+
 searchInput.addEventListener("keydown", async (e) => {
-  if (e.key=='Enter'){
+  if (e.key == 'Enter') {
     const query = searchInput.value.trim();
-    if (query === '') {
-      songs = await MusicAPI.getRecommendedTracks();
-      currentPage = 1;
-      renderSongs(songs);
+
+    if (currentView === 'favorites') {
+      // Search within favorites only
+      const favorites = getFavorites();
+
+      if (query === '') {
+        currentPage = 1;
+        renderFavorites(favorites);
+      } else {
+        // Filter favorites by query
+        const filtered = favorites.filter(song =>
+          song.name.toLowerCase().includes(query.toLowerCase()) ||
+          song.artist.toLowerCase().includes(query.toLowerCase())
+        );
+        currentPage = 1;
+
+        if (filtered.length === 0) {
+          grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">No favorites match your search.</p>';
+          document.getElementById('pagination').innerHTML = '';
+        } else {
+          renderFavorites(filtered);
+        }
+      }
     } else {
-      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">Searching...</p>';
-      const results = await MusicAPI.searchTracks(query);
-      songs = results;
-      currentPage = 1;
-      renderSongs(results);
+      // Search API for home view
+      if (query === '') {
+        songs = await MusicAPI.getRecommendedTracks();
+        currentPage = 1;
+        renderSongs(songs);
+      } else {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">Searching...</p>';
+        const results = await MusicAPI.searchTracks(query);
+        songs = results;
+        currentPage = 1;
+        renderSongs(results);
+      }
     }
   }
 })
+
 
 //shows thee recommeded songs if the search is reset or empty
 async function showAllSongs() {
@@ -125,8 +205,77 @@ async function showAllSongs() {
   grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Loading recommended tracks...</p>';
   songs = await MusicAPI.getRecommendedTracks();
   currentPage = 1;
+  currentView = 'home';
+  document.getElementById('page-title').textContent = 'Recommended';
   renderSongs(songs);
 }
+
+//FAVORITES FUNCTIONS 
+function toggleFavorite(songId, name, artist, image, audio) {
+  const song = { id: songId, name, artist, image, audio };
+
+  if (isFavorite(songId)) {
+    removeFromFavorites(songId);
+  } else {
+    addToFavorites(song);
+  }
+
+  // Re-render current view to update UI
+  if (currentView === 'home') {
+    renderSongs(songs);
+  } else {
+    showFavorites();
+  }
+}
+
+function showFavorites() {
+  currentView = 'favorites';
+  currentPage = 1;
+  document.getElementById('page-title').textContent = 'My Favorites';
+
+  const favorites = getFavorites();
+
+  if (favorites.length === 0) {
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">No favorites yet. Add some songs from the home page!</p>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  // Render favorites with same layout
+  renderFavorites(favorites);
+}
+
+function renderFavorites(favoritesList) {
+  grid.innerHTML = "";
+
+  const start = (currentPage - 1) * songsPerPage;
+  const end = start + songsPerPage;
+  const pageFavorites = favoritesList.slice(start, end);
+
+  pageFavorites.forEach((song) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <div class="thumbnail" style="background-image: url('${song.image}')"></div>
+      <button class="favorite-btn active" onclick="event.stopPropagation(); toggleFavorite(${song.id}, '${song.name.replace(/'/g, "\\'")}', '${song.artist.replace(/'/g, "\\'")}', '${song.image}', '${song.audio}')">❤️</button>
+      <p>${song.name}</p>
+      <small style="opacity:0.6">${song.artist}</small>
+    `;
+
+    card.onclick = () => {
+      // Find song in favorites list for playback
+      currentSongIndex = favoritesList.indexOf(song);
+      songs = favoritesList; // Update songs array to favorites for next/prev
+      playSong(song);
+    };
+
+    grid.appendChild(card);
+  });
+
+  renderPagination(favoritesList.length);
+}
+
 
 
 
@@ -134,20 +283,20 @@ const toggle = document.getElementById('themeToggle')
 
 toggle.addEventListener("click", () => {
 
-  
+
   document.body.classList.add("theme-blur");
 
   setTimeout(() => {
 
-    
+
     const nowDark = !document.body.classList.contains("light");
     document.body.classList.toggle("light", nowDark);
 
-    
+
     toggle.textContent = nowDark ? "🌙" : "☀️";
     localStorage.setItem("theme", nowDark ? "light" : "dark");
 
-    
+
     setTimeout(() => document.body.classList.remove("theme-blur"), 250);
 
   }, 120);
@@ -160,7 +309,7 @@ let wavesurfer = WaveSurfer.create({
   progressColor: '#fff ',
   height: 50,
   responsive: true
-  
+
 });
 
 const playBtn = document.querySelector('.controls button[onclick="togglePlay()"]');
@@ -179,14 +328,13 @@ function playSong(song) {
   document.getElementById("song-name").innerHTML = song.name;
   document.getElementById("song-thumb").style.backgroundImage = `url('${song.image}')`;
   footer.style.display = "block";
-requestAnimationFrame(() => {
-  footer.style.opacity = "1";
-  footer.style.transform = "translateY(0)";
-});
+  requestAnimationFrame(() => {
+    footer.style.opacity = "1";
+    footer.style.transform = "translateY(0)";
+  });
 
 
   wavesurfer.load(song.audio);
-
 
   wavesurfer.on('ready', () => {
     wavesurfer.play();
@@ -202,7 +350,7 @@ function togglePlay() {
 
 function playNext() {
   if (currentSongIndex === -1 || currentSongIndex >= songs.length - 1) {
-    currentSongIndex = 0; 
+    currentSongIndex = 0;
   } else {
     currentSongIndex++;
   }
@@ -233,10 +381,4 @@ function playPrev() {
   wavesurfer.once('ready', () => wavesurfer.play());
 
 }
-document.addEventListener('keydown', (e) => {
-  if (e.key === "ArrowRight") {
-    playNext()
-  } else if (e.key === "ArrowLeft") {
-    playPrev()
-  }
-})
+
