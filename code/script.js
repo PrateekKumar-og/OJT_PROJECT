@@ -382,3 +382,119 @@ function playPrev() {
 
 }
 
+// ---------- SHUFFLE (Favorites-only) ----------
+
+// State for shuffle
+let shuffleActive = false;
+let shuffledFavorites = [];
+
+// Create shuffle button and place near your page title or controls
+// (adjust container selector as necessary)
+const pageTitle = document.getElementById('page-title');
+const shuffleBtn = document.createElement('button');
+shuffleBtn.id = 'shuffleBtn';
+shuffleBtn.style.marginLeft = '12px';
+shuffleBtn.textContent = 'Shuffle ♻️';
+shuffleBtn.title = 'Shuffle favorites';
+shuffleBtn.style.display = 'none'; // hidden by default (only show in favorites)
+shuffleBtn.className = 'shuffle-btn';
+pageTitle && pageTitle.insertAdjacentElement('afterend', shuffleBtn);
+
+// helper: Fisher–Yates shuffle, returns new array
+function shuffleArray(arr) {
+  const a = arr.slice(); // copy
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Toggle shuffle behaviour (only called from favorites view)
+shuffleBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  // get current favorites fresh from storage
+  const favorites = getFavorites();
+  if (favorites.length === 0) return;
+
+  shuffleActive = !shuffleActive;
+
+  if (shuffleActive) {
+    // create shuffled list and set songs to that list for playback/next-prev
+    shuffledFavorites = shuffleArray(favorites);
+    songs = shuffledFavorites;
+    currentPage = 1;
+    shuffleBtn.classList.add('active');
+    shuffleBtn.textContent = 'Shuffled ✅';
+    renderFavorites(songs); // render the shuffled list
+    // auto-start playback from first shuffled track
+    currentSongIndex = 0;
+    playSong(songs[0]);
+  } else {
+    // turn off shuffle: restore normal favorites order and songs
+    songs = favorites;
+    currentPage = 1;
+    shuffleBtn.classList.remove('active');
+    shuffleBtn.textContent = 'Shuffle ♻️';
+    shuffledFavorites = [];
+    renderFavorites(favorites);
+  }
+});
+
+// Modify showFavorites so the shuffle button is shown only in favorites
+function showFavorites() {
+  currentView = 'favorites';
+  currentPage = 1;
+  document.getElementById('page-title').textContent = 'My Favorites';
+
+  const favorites = getFavorites();
+
+  // Show/hide shuffle button based on whether we are on favorites page and have items
+  if (favorites.length > 0) {
+    shuffleBtn.style.display = 'inline-block';
+  } else {
+    shuffleBtn.style.display = 'none';
+    shuffleActive = false;
+    shuffledFavorites = [];
+    songs = []; // ensure songs isn't stuck
+  }
+
+  if (favorites.length === 0) {
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.6;">No favorites yet. Add some songs from the home page!</p>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  // If shuffle already active, keep using shuffledFavorites; otherwise render favorites normally
+  if (shuffleActive && shuffledFavorites.length > 0) {
+    songs = shuffledFavorites; // ensure songs matches what we render/play
+    renderFavorites(shuffledFavorites);
+  } else {
+    shuffleActive = false;
+    songs = favorites;
+    renderFavorites(favorites);
+  }
+}
+// Modify showAllSongs to hide/reset shuffle when going back to home
+async function showAllSongs() {
+  searchInput.value = "";
+  grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Loading recommended tracks...</p>';
+  songs = await MusicAPI.getRecommendedTracks();
+  currentPage = 1;
+  currentView = 'home';
+  document.getElementById('page-title').textContent = 'Recommended';
+  // hide/reset shuffle
+  shuffleActive = false;
+  shuffledFavorites = [];
+  shuffleBtn.style.display = 'none';
+  renderSongs(songs);
+}
+
+// Ensure initializeApp/homes also hide shuffle (safety)
+initializeApp().then(() => {
+  shuffleActive = false;
+  shuffledFavorites = [];
+  shuffleBtn.style.display = 'none';
+});
+
+
