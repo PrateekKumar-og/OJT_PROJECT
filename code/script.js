@@ -6,6 +6,8 @@ const songsPerPage = 8;
 
 let currentView = 'home'; // 'home' or 'favorites'
 
+
+
 // FAVORITES MANAGEMENT
 function getFavorites() {
   try {
@@ -382,6 +384,10 @@ function playPrev() {
 
 }
 
+
+
+
+
 // ---------- SHUFFLE (Favorites-only) ----------
 
 // State for shuffle
@@ -393,6 +399,13 @@ let shuffledFavorites = [];
 const pageTitle = document.getElementById('page-title');
 const shuffleBtn = document.createElement('button');
 shuffleBtn.id = 'shuffleBtn';
+// shuffleBtn.style.marginRight = '40px';
+shuffleBtn.textContent = '🔀';
+shuffleBtn.title = 'Shuffle favorites';
+shuffleBtn.style.display = 'none'; // hidden by default (only show in favorites)
+shuffleBtn.className = 'shuffle-btn';
+const controls = document.querySelector('.controls');
+controls && controls.insertAdjacentElement('afterend', shuffleBtn);
 shuffleBtn.style.marginLeft = '12px';
 shuffleBtn.textContent = 'Shuffle ♻️';
 shuffleBtn.title = 'Shuffle favorites';
@@ -496,5 +509,3 @@ initializeApp().then(() => {
   shuffledFavorites = [];
   shuffleBtn.style.display = 'none';
 });
-
-

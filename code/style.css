@@ -181,6 +181,22 @@ body {
   margin: 0 10px;
 }
 
+#shuffle-btn.active {
+  color: var(--btnBackground);
+  filter: drop-shadow(0 0 5px var(--btnBackground));
+}
+
+/* Ensure shuffle button is sized correctly on mobile */
+@media screen and (max-width: 767px) {
+    /* ... existing media queries ... */
+  .controls button {
+    font-size: 20px;
+    margin: 0 5px; /* Slightly reduced margin for space */
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 
 #themeToggle {
   font-size: 1.8rem;
@@ -278,6 +294,11 @@ footer {
   color: var(--activeBtnTextColor) !important;
   font-weight: 700;
   border: 2px solid var(--activeBtnTextColor) !important;
+}
+
+#shuffleBtn{
+  margin-right: 9rem;
+  scale: 1.2;
 }
 
 /* RESPONSIVE DESIGN */
