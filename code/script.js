@@ -388,6 +388,7 @@ function playPrev() {
 
 
 
+// ---------- SHUFFLE (Favorites-only) ----------
 
 // State for shuffle
 let shuffleActive = false;
@@ -405,6 +406,12 @@ shuffleBtn.style.display = 'none'; // hidden by default (only show in favorites)
 shuffleBtn.className = 'shuffle-btn';
 const controls = document.querySelector('.controls');
 controls && controls.insertAdjacentElement('afterend', shuffleBtn);
+shuffleBtn.style.marginLeft = '12px';
+shuffleBtn.textContent = 'Shuffle ♻️';
+shuffleBtn.title = 'Shuffle favorites';
+shuffleBtn.style.display = 'none'; // hidden by default (only show in favorites)
+shuffleBtn.className = 'shuffle-btn';
+pageTitle && pageTitle.insertAdjacentElement('afterend', shuffleBtn);
 
 // helper: Fisher–Yates shuffle, returns new array
 function shuffleArray(arr) {
@@ -431,6 +438,7 @@ shuffleBtn.addEventListener('click', (e) => {
     songs = shuffledFavorites;
     currentPage = 1;
     shuffleBtn.classList.add('active');
+    shuffleBtn.textContent = 'Shuffled ✅';
     renderFavorites(songs); // render the shuffled list
     // auto-start playback from first shuffled track
     currentSongIndex = 0;
@@ -440,6 +448,7 @@ shuffleBtn.addEventListener('click', (e) => {
     songs = favorites;
     currentPage = 1;
     shuffleBtn.classList.remove('active');
+    shuffleBtn.textContent = 'Shuffle ♻️';
     shuffledFavorites = [];
     renderFavorites(favorites);
   }
